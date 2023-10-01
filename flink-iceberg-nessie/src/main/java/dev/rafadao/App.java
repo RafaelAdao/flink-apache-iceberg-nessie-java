@@ -13,6 +13,11 @@ import static org.apache.flink.table.api.Expressions.$;
 
 public class App {
     public static void main(String[] args) {
+        if (args.length < 1) {
+            throw new IllegalArgumentException("Missing s3 endpoint argument");
+        }
+        String s3Endpoint = args[0];
+
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, EnvironmentSettings.newInstance().inStreamingMode().build());
 
@@ -26,7 +31,7 @@ public class App {
                 + "'ref'='main',"
                 + "'client.assume-role.region'='us-east-1',"
                 + "'warehouse'='s3://warehouse',"
-                + "'s3.endpoint'='http://172.20.0.3:9000'"
+                + "'s3.endpoint'='"+s3Endpoint+"'"
                 + ")");
 
         // List all catalogs
